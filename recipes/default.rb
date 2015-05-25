@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: chef-dreadnot
+# Cookbook Name:: dreadnot
 # Recipe:: default
 #
 # Copyright (C) 2015 Rackspace
