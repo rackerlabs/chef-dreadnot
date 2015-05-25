@@ -1,0 +1,7 @@
+name             'chef-dreadnot'
+maintainer       'Rackspace'
+maintainer_email 'YOUR_EMAIL'
+license          'Apache 2.0'
+description      'Installs/Configures chef-dreadnot'
+long_description 'Installs/Configures chef-dreadnot'
+version          '0.1.0'
