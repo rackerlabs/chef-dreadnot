@@ -1,10 +1,10 @@
 # dreadnot-cookbook
 
-TODO: Enter the cookbook description here.
+This is a chef cookbook to isntall and configure [Dreadnot]() deploy software.
 
 ## Supported Platforms
 
-TODO: List your supported platforms.
+* Ubuntu 14.04 LTS
 
 ## Attributes
 
@@ -16,10 +16,34 @@ TODO: List your supported platforms.
     <th>Default</th>
   </tr>
   <tr>
-    <td><tt>['dreadnot']['bacon']</tt></td>
-    <td>Boolean</td>
-    <td>whether to include bacon</td>
-    <td><tt>true</tt></td>
+    <td><tt>['dreadnot']['user']</tt></td>
+    <td>String</td>
+    <td>User to run as and own files</td>
+    <td><tt>dreadnot</tt></td>
+  </tr>
+  <tr>
+    <td><tt>['dreadnot']['group']</tt></td>
+    <td>String</td>
+    <td>Group to own files</td>
+    <td><tt>dreadnot</tt></td>
+  </tr>
+  <tr>
+    <td><tt>['dreadnot']['dir']</tt></td>
+    <td>String</td>
+    <td>Directory</td>
+    <td><tt>/opt/dreadnot</tt></td>
+  </tr>
+  <tr>
+    <td><tt>['dreadnot']['config']</tt></td>
+    <td>String</td>
+    <td>Path to configuration file</td>
+    <td><tt>/opt/dreadnot/settings.js</tt></td>
+  </tr>
+  <tr>
+    <td><tt>['dreadnot']['domain']</tt></td>
+    <td>String</td>
+    <td>Domain name to use for the webhost</td>
+    <td><tt>dreadnot.example.com</tt></td>
   </tr>
 </table>
 
@@ -39,4 +63,6 @@ Include `dreadnot` in your node's `run_list`:
 
 ## License and Authors
 
-Author:: Rackspace (<YOUR_EMAIL>)
+Author:: Michael Burns (<michael.burns@rackspace.com>)
+
+Author:: Rackspace (<ele-ops@lists.rackspace.com>)

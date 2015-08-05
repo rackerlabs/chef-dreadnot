@@ -12,4 +12,4 @@ default['dreadnot']['config'] = '/opt/dreadnot/settings.js'
 
 default['dreadnot']['instance_prefix'] = '/opt/dreadnot/instances'
 
-default['dreadnot']['domain'] = 'example.com'
+default['dreadnot']['domain'] = 'dreadnot.example.com'
