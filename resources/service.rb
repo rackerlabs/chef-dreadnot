@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: dreadnot
-# Recipe:: default
+# Resource:: service
 #
 # Copyright (C) 2015 Rackspace
 #
@@ -17,4 +17,12 @@
 # limitations under the License.
 #
 
-# Chef::Log.debug('dreadnot::default is a no-op recipe')
+actions :enable, :disable, :install, :uninstall, :start, :stop
+default_action :enable
+
+attribute :user, kind_of: String, default: 'dreadnot'
+attribute :group, kind_of: String, default: 'dreadnot'
+
+attribute :env, kind_of: String, default: 'dev'
+
+attribute :stock, kind_of: String

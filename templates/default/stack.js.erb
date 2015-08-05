@@ -1,0 +1,69 @@
+exports.config = {
+  // The name of this Dreadnot instance, used for display
+  name: 'Example Dreadnot',
+
+  // Each Dreadnot instance supports one environment
+  env: '<% @env %>',
+
+  // The data root Dreadnot will use
+  data_root: '<% node['dreadnot']['home'] %>',
+
+  // Base URL to access dreadnot (used in IRC, email, Hipchat)
+  default_url: 'http://example.com',
+
+  // Dreadnot uses an htpasswd file (with support for md5 and sha1) for auth
+  htpasswd_file: '/etc/dreadnot/htpasswd',
+
+  // Each stack represents a code base that should be deployed to one or more regions
+  stacks: {
+
+    // For a stack named 'webapp', there should be a 'webapp.js' file in the
+    // stacks directory
+    webapp: {
+      // What branch to look in for the latest revision of the code base
+      tip: 'master',
+
+      // How long to cache the latest revision of the code base
+      tip_ttl: 120 * 1000,
+
+      // What regions this stack should be deployed to
+      regions: ['us-east1'],
+
+      // Stacks should implement dryrun for testing
+      dryrun: false
+    }
+  },
+
+  // The GitHub organization you provide is used to build URLs for your stacks
+  github: {
+    organization: 'racker'
+  },
+
+  // Plugins provide optional functionality such as notifications. Any plugins
+  // that are not configured won't be used.
+  plugins: {
+
+    // An IRC notification plugin
+    irc: {
+      nick: 'dreadnot',
+      channels: {
+        'irc.freenode.net': [
+          // '#private-channel pass',
+          '#public-channel'
+        ]
+      }
+    },
+
+    // An email notification plugin
+    email: {
+      server: {
+        user: 'dreadnot@example.com',
+        // password: '',
+        host: 'smtp.example.com',
+        ssl: true
+      },
+      to: 'systems@example.com',
+      from: 'dreadnot@example.com'
+    }
+  }
+};
