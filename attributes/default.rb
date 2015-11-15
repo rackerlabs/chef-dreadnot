@@ -8,7 +8,7 @@ default['dreadnot']['dir'] = '/opt/dreadnot'
 # default['dreadnot']['embedded_stacks'] = false
 # default['dreadnot']['install_nodejs'] = true
 
-default['dreadnot']['config'] = '/opt/dreadnot/settings.js'
+default['dreadnot']['config'] = '/opt/dreadnot/settings.conf'
 
 default['dreadnot']['instance_prefix'] = '/opt/dreadnot/instances'
 

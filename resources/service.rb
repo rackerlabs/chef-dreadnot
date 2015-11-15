@@ -25,4 +25,4 @@ attribute :group, kind_of: String, default: 'dreadnot'
 
 attribute :env, kind_of: String, default: 'dev'
 
-attribute :stock, kind_of: String
+attribute :stack, kind_of: String

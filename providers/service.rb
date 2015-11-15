@@ -25,39 +25,32 @@ action :enable do
   # htpasswd
   configure_htpasswd 'dreadnot' do
     path node['dreadnot']['dir']
-    # suffix '' if new_resource.suffix
+    suffix new_resource.suffix if new_resource.suffix
   end
 
   # template
   template node['dreadnot']['config'] do
+    source 'dreadnot.conf.erb'
     owner 'root'
     group 'root'
     mode 00644
-    source 'stack.js.erb'
-    variables(dreadnot_servername: dreadnot_servername,
-              cloudmonitoring_username: node['cloud_monitoring']['raxusername'],
-              cloudmonitoring_apikey: node['cloud_monitoring']['raxapikey'],
-              ele_buildbot_username: dn_credentials['ele_buildbot_username'],
-              ele_buildbot_password: dn_credentials['ele_buildbot_password'],
-              agent_buildbot_username: dn_credentials['agent_buildbot_username'],
-              agent_buildbot_password: dn_credentials['agent_buildbot_password'],
-              pagerduty_api_key: dn_credentials['pagerduty_api_key'])
+    variables(
+      dreadnot_servername: new_resource.url,
+      cloudmonitoring_username: node['cloud_monitoring']['raxusername'],
+      cloudmonitoring_apikey: node['cloud_monitoring']['raxapikey'],
+      ele_buildbot_username: new_resource.ele_buildbot_username,
+      ele_buildbot_password: new_resource.ele_buildbot_password,
+      agent_buildbot_username: agent_buildbot_username,
+      agent_buildbot_password: agent_buildbot_password,
+      pagerduty_api_key: pagerduty_api_key
+    )
   end
-
-  # vhost
 
   # cleanup
 
   # bundle & link
 
   # service
-  poise_service_user 'www-data'
-
-  poise_service 'apache2' do
-    command '/usr/sbin/apache2 -f /etc/apache2/apache2.conf -DFOREGROUND'
-    directory node['dreadnot']['dir']
-    environment HOME: "/home/ele-#{node['ele']['env']}-dreadnot"
-  end
 end
 
 action :disable do
