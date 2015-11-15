@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: dreadnot
-# Recipe:: install
+# Resource:: service
 #
 # Copyright (C) 2015 Rackspace
 #
@@ -17,7 +17,10 @@
 # limitations under the License.
 #
 
-dreadnot 'default' do
-  user 'dreadnot'
-  action :install
-end
+actions :install
+default_action :install
+
+attribute :user, kind_of: String, default: 'dreadnot'
+attribute :group, kind_of: String, default: 'dreadnot'
+
+attribute :cookbook, kind_of: String, default: 'dreadnot'

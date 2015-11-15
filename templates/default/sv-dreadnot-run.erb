@@ -1,0 +1,6 @@
+#!/bin/bash
+
+exec chpst -u <%= @options[:username] %> -e /etc/service/dreadnot/env node /opt/dn/bin/dreadnot \
+  -p 8000 \
+  -c <%= node['dreadnot']['config'] %> \
+  -s /opt/dn-stacks/stacks/ 2>&1

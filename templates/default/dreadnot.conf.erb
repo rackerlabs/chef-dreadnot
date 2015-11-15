@@ -1,0 +1,65 @@
+<VirtualHost *:80>
+    ServerName <%= @dreadnot_servername + '.' + node['dreadnot']['domain'] %>
+    ServerAlias <%= @dreadnot_servername + '.' + node['dreadnot']['domain'] %>
+
+    CustomLog /var/log/apache2/dreadnot-access.log combined
+    ErrorLog /var/log/apache2/dreadnot-error.log
+
+    Redirect permanent / https://<%= @dreadnot_servername + '.' + node['dreadnot']['domain'] %>/
+</VirtualHost>
+<VirtualHost *:443>
+    ServerName <%= @dreadnot_servername + '.' + node['dreadnot']['domain'] %>
+    ServerAlias <%= node.name %> <%= node.fqdn %>
+
+    # Disable TRACE/TRACK
+    RewriteEngine on
+    RewriteCond %{REQUEST_METHOD} ^(TRACE|TRACK)
+    RewriteRule .* - [F]
+
+    # SSL Mojo
+    SSLEngine On
+    SSLProxyEngine On
+
+    SSLCipherSuite <%= node[:ssl][:ssl_cipher_suite] %>
+    SSLHonorCipherOrder  <%= node[:ssl][:honor_cipher_order] %>
+    SSLProtocol <%= node[:ssl][:ssl_protocols] %>
+
+    SSLCertificateFile <%= node[:ssl][:cmk1kme][:cert] %>
+    SSLCertificateKeyFile <%= node[:ssl][:cmk1kme][:key] %>
+    SSLCertificateChainFile <%= node[:ssl][:cmk1kme][:bundle] %>
+
+    CustomLog /var/log/apache2/dreadnot-access.log combined
+    ErrorLog /var/log/apache2/dreadnot-error.log
+
+    <Proxy *>
+      Order deny,allow
+      Allow from all
+    </Proxy>
+
+    ProxyPreserveHost On
+    ProxyRequests Off
+
+    ProxyPass / http://127.0.0.1:8000/
+    ProxyPassReverse / http://127.0.0.1:8000/
+</VirtualHost>
+<VirtualHost *:<%= node['dreadnot']['port'] %>>
+    ServerName <%= @dreadnot_servername + '.' + node['dreadnot']['domain'] %>
+    ServerAlias <%= node.name %> <%= node.name + '.' + node['dreadnot']['domain'] %>
+
+    CustomLog /var/log/apache2/dreadnot-access.log combined
+    ErrorLog /var/log/apache2/dreadnot-error.log
+
+    # SSL Mojo
+    SSLEngine On
+    SSLProxyEngine On
+
+    SSLCipherSuite <%= node[:ssl][:ssl_cipher_suite] %>
+    SSLHonorCipherOrder  <%= node[:ssl][:honor_cipher_order] %>
+    SSLProtocol <%= node[:ssl][:ssl_protocols] %>
+
+    SSLCertificateFile <%= node[:ssl][:cmk1kme][:cert] %>
+    SSLCertificateKeyFile <%= node[:ssl][:cmk1kme][:key] %>
+    SSLCertificateChainFile <%= node[:ssl][:cmk1kme][:bundle] %>
+
+    Redirect permanent / https://<%= @dreadnot_servername + '.' + node['dreadnot']['domain'] %>/
+</VirtualHost>

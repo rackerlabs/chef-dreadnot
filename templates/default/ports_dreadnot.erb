@@ -1,0 +1,2 @@
+# Allow anything to hit dreadnot 
+-A FWR -i eth0 -p tcp --dport <%= node['dreadnot']['port'] %> -j ACCEPT

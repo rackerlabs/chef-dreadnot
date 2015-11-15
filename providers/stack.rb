@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: dreadnot
-# Recipe:: default
+# Provider:: stack
 #
 # Copyright (C) 2015 Rackspace
 #
@@ -17,23 +17,26 @@
 # limitations under the License.
 #
 
-include_recipe 'dreadnot::bundle'
+include Dreadnot::Helper
 
-# Apache Virtualhost
-include_recipde 'dreadnot::vhost'
+use_inline_resources if defined?(use_inline_resources)
 
-runit_service 'dreadnot' do
-  owner 'daemon'
-  group 'daemon'
-  finish true
-  options(
-    :username => node['dreadnot']['user'],
-    :servicename => 'dreadnot'
-  )
-  env(
-    :HOME => node['dreadnot']['homedir']
-  )
+action :install do
+  execute 'stack_npm_install' do
+    command 'npm install'
+    cwd '/opt/dn-stacks'
+    user node['drednot']['user']
+    action :nothing
+  end
+
+  remote_directory '/opt/dn-stacks' do
+    source 'stacks'
+    cookbook node['dreadnot']['cookbook']
+    notifies :run, 'execute[dn_npm_install]', :immediately
+    notifies :restart, 'service[dreadnot]', :delayed
+  end
 end
 
-# Open Firewall
-iptables_rule 'ports_dreadnot' unless node.roles.include?('dev')
+def initialize(*args)
+  super
+end

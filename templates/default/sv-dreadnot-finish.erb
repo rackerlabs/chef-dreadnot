@@ -1,0 +1,61 @@
+#!/bin/bash
+code=$1
+status=$2
+servicename=<%= @options[:servicename] %>
+
+# if the local scribe we send to is in compression mode, send it compressed stuff.
+if grep -q ^thrift_compression=on /opt/ele-conf/scribe-log-client.conf; then 
+  args="--compression"
+fi
+
+if [ "$servicename" != "ele-gelf-cat" ]; then
+ tail -n <%= node[:ele][:tail_lines] %> ./log/main/current | /opt/ele/bin/runsv_finish.js -a 127.0.0.1:1500 -c log-<%= node.name %> -r $servicename -e $code -s $status -w /opt/ele/bin $args
+fi
+
+# Add a line to the log file to help spot restarts.
+timestamp=`expr substr $(date +"%Y-%m-%d_%H:%M:%S.%N") 1 25`
+echo "$timestamp **** Service Restarting ****" >> ./log/main/current
+
+# send nagios a passive alert if we are flapping
+now=$(date +%s)
+cache=/service/$servicename/flap
+threshold_time=<%= node[:flap][:timeframe] %>
+threshold_count=<%= node[:flap][:count] %>
+
+# reset_cach $timestamp $count
+reset_cache () {
+  # fake ternary in bash
+  [ $1 ] && a=$1 || a=$now
+  [ $2 ] && b=$2 || b=1
+  echo "$a $b" > $cache
+}
+
+if [ ! -e $cache ]; then
+  reset_cache
+  exit 0
+fi
+
+content=$(cat $cache)
+timestamp=$(echo $content | awk '{print $1}')
+count=$(echo $content | awk '{print $2}')
+elapsed=$(( ($now - $timestamp) / 60 ))
+
+if [ $elapsed -gt $threshold_time ]; then
+  # Reset the cache, since it's too old to worry about
+  reset_cache
+fi
+
+if [ $count -lt $threshold_count ]; then
+  # under $count threshold, reset $count but not $timestamp
+  reset_cache $timestamp $(( $count + 1 ))
+  exit 0
+elif [ $elapsed -lt $threshold_time ]; then
+  # flapping
+  . /opt/ele-conf/cronjobs/utils
+  send_data "${servicename}_flapping,2,restarted ${count} times in ${elapsed} minutes"
+  reset_cache
+  exit 1
+else
+  reset_cache
+  exit 0
+fi

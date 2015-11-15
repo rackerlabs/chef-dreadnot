@@ -1,15 +1,21 @@
 # Encoding: utf-8
-# attributes/default.rb
 
 default['dreadnot']['user'] = 'dreadnot'
 default['dreadnot']['group'] = 'dreadnot'
+default['dreadnot']['home'] = "/home/#{node['dreadnot']['user']}"
 
 default['dreadnot']['dir'] = '/opt/dreadnot'
+default['dreadnot']['config'] = '/opt/dreadnot/settings.js'
+default['dreadnot']['instance_prefix'] = '/opt/dreadnot/instances'
+
 # default['dreadnot']['embedded_stacks'] = false
 # default['dreadnot']['install_nodejs'] = true
 
-default['dreadnot']['config'] = '/opt/dreadnot/settings.js'
+default['dreadnot']['domain'] = 'example.com'
+# default['dreadnot']['port'] = 8000
+default['dreadnot']['port'] = 8443
 
-default['dreadnot']['instance_prefix'] = '/opt/dreadnot/instances'
+default['dreadont']['version'] = ''
 
-default['dreadnot']['domain'] = 'dreadnot.example.com'
+default['dreadnot']['bundle_url'] = ''
+default['dreadnot']['stack_url'] = ''

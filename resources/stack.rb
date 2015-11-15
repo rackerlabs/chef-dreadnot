@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: dreadnot
-# Recipe:: default
+# Resource:: stack
 #
 # Copyright (C) 2015 Rackspace
 #
@@ -17,23 +17,7 @@
 # limitations under the License.
 #
 
-include_recipe 'dreadnot::bundle'
+actions :install
+default_action :install
 
-# Apache Virtualhost
-include_recipde 'dreadnot::vhost'
-
-runit_service 'dreadnot' do
-  owner 'daemon'
-  group 'daemon'
-  finish true
-  options(
-    :username => node['dreadnot']['user'],
-    :servicename => 'dreadnot'
-  )
-  env(
-    :HOME => node['dreadnot']['homedir']
-  )
-end
-
-# Open Firewall
-iptables_rule 'ports_dreadnot' unless node.roles.include?('dev')
+attribute :env, kind_of: String, default: 'dev'

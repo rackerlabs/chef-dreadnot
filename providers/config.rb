@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: dreadnot
-# Resource:: service
+# Provider:: service
 #
 # Copyright (C) 2015 Rackspace
 #
@@ -17,12 +17,20 @@
 # limitations under the License.
 #
 
-actions :enable, :disable, :install, :uninstall, :start, :stop
-default_action :enable
+include Dreadnot::Helper
 
-attribute :user, kind_of: String, default: 'dreadnot'
-attribute :group, kind_of: String, default: 'dreadnot'
+use_inline_resources if defined?(use_inline_resources)
 
-attribute :env, kind_of: String, default: 'dev'
+action :install do
+  template node['dreadnot']['config'] do
+    owner 'root'
+    group 'root'
+    mode 00644
+    source 'settings.js.erb'
+    variables(dreadnot_servername: node['dreadnot']['user'])
+  end
+end
 
-attribute :stock, kind_of: String
+def initialize(*args)
+  super
+end
