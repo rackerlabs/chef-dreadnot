@@ -27,7 +27,16 @@ action :install do
     group 'root'
     mode 00644
     source 'settings.js.erb'
-    variables(dreadnot_servername: node['dreadnot']['user'])
+    variables(
+      dreadnot_servername: node['dreadnot']['user'],
+      cloudmonitoring_username: node['cloud_monitoring']['raxusername'],
+      cloudmonitoring_apikey: node['cloud_monitoring']['raxapikey'],
+      ele_buildbot_username: new_resource.ele_buildbot_username,
+      ele_buildbot_password: new_resource.ele_buildbot_password,
+      agent_buildbot_username: agent_buildbot_username,
+      agent_buildbot_password: agent_buildbot_password,
+      pagerduty_api_key: pagerduty_api_key
+    )
   end
 end
 

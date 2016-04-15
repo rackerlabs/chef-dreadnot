@@ -27,11 +27,11 @@ runit_service 'dreadnot' do
   group 'daemon'
   finish true
   options(
-    :username => node['dreadnot']['user'],
-    :servicename => 'dreadnot'
+    username: node['dreadnot']['user'],
+    servicename: 'dreadnot'
   )
   env(
-    :HOME => node['dreadnot']['homedir']
+    HOME: node['dreadnot']['homedir']
   )
 end
 

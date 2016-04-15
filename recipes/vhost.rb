@@ -31,7 +31,9 @@ template "#{node['apache']['dir']}/sites-available/dreadnot.conf" do
   mode 00644
   owner 'root'
   group 'root'
-  variables(dreadnot_servername: node['dreadnot']['name'])
+  variables(
+    dreadnot_servername: node['dreadnot']['name']
+  )
 end
 
 # Tell apache to also listen on 8443 - where stunnel used to listen

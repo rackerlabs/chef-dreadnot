@@ -1,6 +1,6 @@
 exports.config = {
   // The name of this Dreadnot instance, used for display
-  name: '<% node['dreadnot']['name'] %>',
+  name: '<% @name %>',
 
   // Each Dreadnot instance supports one environment
   env: '<% @env %>',
@@ -9,7 +9,7 @@ exports.config = {
   data_root: '<% node['dreadnot']['dir'] %>',
 
   // Base URL to access dreadnot (used in IRC, email, Hipchat)
-  default_url: '<% node['dreadnot']['url'] %>',
+  default_url: '<% @url %>',
 
   // Dreadnot uses an htpasswd file (with support for md5 and sha1) for auth
   htpasswd_file: '<% node['dreadnot']['dir'] %>/htpasswd',
