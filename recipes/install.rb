@@ -17,7 +17,14 @@
 # limitations under the License.
 #
 
-dreadnot 'default' do
-  user 'dreadnot'
+# dreadnot_servername: dreadnot_servername,
+# ele_buildbot_username: dn_credentials['ele_buildbot_username'],
+# ele_buildbot_password: dn_credentials['ele_buildbot_password'],
+# agent_buildbot_username: dn_credentials['agent_buildbot_username'],
+# agent_buildbot_password: dn_credentials['agent_buildbot_password'],
+# pagerduty_api_key: dn_credentials['pagerduty_api_key']
+
+
+dreadnot_service 'default' do
   action :install
 end
