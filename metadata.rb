@@ -4,15 +4,15 @@ maintainer_email 'michael.burns@rackspace.com'
 license 'Apache 2.0'
 description 'Installs/Configures dreadnot'
 long_description 'Installs/Configures dreadnot'
-version '0.1.0'
+version '0.2.0'
 
-recipe 'dreadnot', 'Installs dreadnot'
+recipe 'dreadnot', 'Installs dreadnot service'
+recipe 'stack', 'Config stack'
+recipe 'bundle', 'Downloads dreadnot'
+recipe 'vhost', 'Setup virtualhost'
 
+depends 'apache2'
 depends 'cleanup'
 depends 'htpasswd'
-depends 'nodejs'
-depends 'poise-service-runit'
-
-%w(ubuntu debian freebsd centos redhat fedora amazon scientific).each do |os|
-  supports os
-end
+depends 'ssl'
+depends 'runit'

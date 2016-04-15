@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: dreadnot
-# Resource:: service
+# Provider:: stack
 #
 # Copyright (C) 2015 Rackspace
 #
@@ -17,12 +17,26 @@
 # limitations under the License.
 #
 
-actions :enable, :disable, :install, :uninstall, :start, :stop
-default_action :enable
+include Dreadnot::Helper
 
-attribute :user, kind_of: String, default: 'dreadnot'
-attribute :group, kind_of: String, default: 'dreadnot'
+use_inline_resources if defined?(use_inline_resources)
 
-attribute :env, kind_of: String, default: 'dev'
+action :install do
+  execute 'stack_npm_install' do
+    command 'npm install'
+    cwd '/opt/dn-stacks'
+    user node['drednot']['user']
+    action :nothing
+  end
 
-attribute :stock, kind_of: String
+  remote_directory '/opt/dn-stacks' do
+    source 'stacks'
+    cookbook node['dreadnot']['cookbook']
+    notifies :run, 'execute[dn_npm_install]', :immediately
+    notifies :restart, 'service[dreadnot]', :delayed
+  end
+end
+
+def initialize(*args)
+  super
+end
